@@ -1,0 +1,4 @@
+en:
+  yabi:
+    errors:
+      unexpected_positional_arguments: "unexpected positional arguments: %{args}"

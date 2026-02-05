@@ -1,0 +1,38 @@
+require:
+  - ./rubocop_compat
+  - rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 3.1
+  NewCops: enable
+  UseCache: false
+  SuggestExtensions: false
+  Exclude:
+    - "tmp/**/*"
+
+Style/Documentation:
+  Enabled: false
+
+Gemspec/DevelopmentDependencies:
+  Enabled: false
+
+RSpec:
+  Enabled: true
+
+RSpecRails:
+  Enabled: false
+
+Capybara:
+  Enabled: false
+
+RSpec/MultipleDescribes:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+Capybara/RSpec/PredicateMatcher:
+  Enabled: false
