@@ -4,9 +4,6 @@ require 'dry/monads/all'
 require 'dry/validation'
 require 'dry/initializer'
 require 'dry/matcher/result_matcher'
-require 'active_support/core_ext/class/attribute'
-require 'active_support/core_ext/hash/keys'
-
 module Yabi
   # Base object for building service objects / interactors backed by dry-rb.
   class BaseInteractor
@@ -14,7 +11,20 @@ module Yabi
     extend Dry::Initializer
 
     # Optional Dry::Validation::Contract subclass to run before #call.
-    class_attribute :contract
+    class << self
+      attr_writer :contract
+
+      def inherited(subclass)
+        super
+        subclass.contract = contract
+      end
+
+      def contract
+        return @contract if defined?(@contract) && @contract
+
+        const_get(:ValidationContract) if const_defined?(:ValidationContract)
+      end
+    end
 
     class << self
       # Entrypoint. Instantiates, runs validation, then #call.
@@ -41,24 +51,32 @@ module Yabi
         Dry::Matcher::ResultMatcher.call(result, &block)
       end
 
-      def contract
-        return unless const_defined?(:ValidationContract)
-
-        const_get(:ValidationContract)
-      end
-
       private
 
       # Normalize params: convert ActionController::Parameters and other to_h-capable
       # values, then deep-symbolize keys for dry-validation compatibility.
       def transform_values_to_hash(args)
-        args.transform_values do |value|
+        symbolized = args.transform_values do |value|
           if value.respond_to?(:to_h) && !value.is_a?(Hash)
             value.to_h
           else
             value
           end
-        end.deep_symbolize_keys
+        end
+        deep_symbolize_keys(symbolized)
+      end
+
+      def deep_symbolize_keys(obj)
+        case obj
+        when Hash
+          obj.each_with_object({}) do |(k, v), acc|
+            acc[k.to_sym] = deep_symbolize_keys(v)
+          end
+        when Array
+          obj.map { |v| deep_symbolize_keys(v) }
+        else
+          obj
+        end
       end
     end
 

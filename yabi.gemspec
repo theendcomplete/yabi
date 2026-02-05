@@ -22,7 +22,6 @@ Gem::Specification.new do |spec|
     Dir['lib/**/*', 'config/locales/**/*', 'README.md', 'LICENSE', 'CHANGELOG.md']
   end
 
-  spec.add_dependency 'activesupport', '>= 7.0'
   spec.add_dependency 'dry-initializer', '>= 3.1'
   spec.add_dependency 'dry-matcher', '>= 1.0'
   spec.add_dependency 'dry-monads', '>= 1.6'
