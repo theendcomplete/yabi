@@ -41,14 +41,18 @@ Users::Questions::Create.call(question_text: 'hello')
 
 Pass a contract via the `contract:` keyword when calling, or define an inner `ValidationContract` constant. Validation runs before `call`; failures return `Failure(errors)`.
 
-YABI ships with `Yabi::BaseContract` (also available as `BaseContract`) which is a light wrapper around `Dry::Validation::Contract`. Customize it in your app if you want message backends, load paths, or locale tweaks:
+YABI ships with `Yabi::BaseContract` (also available as `BaseContract`) which is a light wrapper around `Dry::Validation::Contract`. It uses the `:i18n` messages backend by default and loads the built‑in dry-validation translations. Customize it in your app if you want different load paths or locales:
 
 ```ruby
 class ApplicationContract < Yabi::BaseContract
-  config.messages.backend = :i18n
-  config.messages.load_paths << Rails.root.join('config/locales/en.yml')
+  config.messages.default_locale = :es
+  config.messages.load_paths << Rails.root.join('config/locales/es.yml')
 end
 ```
+
+### Error messages & I18n
+
+The gem ships an English locale file at `config/locales/en.yml` and loads it automatically. Errors raised inside YABI (e.g., for unexpected positional arguments) are translated via `I18n.t('yabi.errors.*')`. Override translations by adding your own locale files earlier in `I18n.load_path` or by setting `I18n.locale`.
 
 ### Helpers
 

@@ -23,7 +23,8 @@ module Yabi
           if positional_args.first.is_a?(Hash)
             args.merge(positional_args.first)
           elsif positional_args.any?
-            raise ArgumentError, "unexpected positional arguments: #{positional_args.inspect}"
+            raise ArgumentError,
+                  I18n.t('yabi.errors.unexpected_positional_arguments', args: positional_args.inspect)
           else
             args
           end
@@ -41,7 +42,7 @@ module Yabi
       end
 
       def contract
-        return unless constants.include?(:ValidationContract)
+        return unless const_defined?(:ValidationContract)
 
         const_get(:ValidationContract)
       end
@@ -52,9 +53,7 @@ module Yabi
       # values, then deep-symbolize keys for dry-validation compatibility.
       def transform_values_to_hash(args)
         args.transform_values do |value|
-          if defined?(ActionController::Parameters) && value.is_a?(ActionController::Parameters)
-            value.to_h
-          elsif value.respond_to?(:to_h) && !value.is_a?(Hash)
+          if value.respond_to?(:to_h) && !value.is_a?(Hash)
             value.to_h
           else
             value

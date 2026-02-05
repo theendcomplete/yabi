@@ -8,7 +8,7 @@ RSpec.describe Yabi::BaseInteractor do
       Class.new(described_class) do
         option :foo
 
-        self.const_set(
+        const_set(
           :ValidationContract,
           Class.new(Dry::Validation::Contract) do
             params { required(:foo).filled(:integer) }
@@ -40,6 +40,12 @@ RSpec.describe Yabi::BaseInteractor do
 
       expect(result).to be_success
       expect(result.value!).to eq(6)
+    end
+
+    it 'localizes unexpected positional argument errors' do
+      expect do
+        service_class.call(1)
+      end.to raise_error(ArgumentError, I18n.t('yabi.errors.unexpected_positional_arguments', args: '[1]'))
     end
   end
 

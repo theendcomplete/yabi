@@ -1,0 +1,46 @@
+require:
+  - ./rubocop_compat
+  - rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 3.1
+  NewCops: enable
+  UseCache: false
+  SuggestExtensions: false
+  Exclude:
+    - "tmp/**/*"
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/AbcSize:
+  Exclude:
+    - "lib/yabi/base_interactor.rb"
+
+Metrics/MethodLength:
+  Exclude:
+    - "lib/yabi/base_interactor.rb"
+
+Gemspec/DevelopmentDependencies:
+  Enabled: false
+
+RSpec:
+  Enabled: true
+
+RSpecRails:
+  Enabled: false
+
+Capybara:
+  Enabled: false
+
+RSpec/MultipleDescribes:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+Capybara/RSpec/PredicateMatcher:
+  Enabled: false

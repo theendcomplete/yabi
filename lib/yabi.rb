@@ -5,15 +5,20 @@ require_relative 'yabi/base_interactor'
 require_relative 'yabi/base_contract'
 require_relative 'yabi/base_service'
 
+require 'i18n'
+
+# Load bundled translations for error messages.
+YABI_LOCALE_PATH = File.expand_path('../config/locales/en.yml', __dir__)
+unless I18n.load_path.include?(YABI_LOCALE_PATH)
+  I18n.load_path << YABI_LOCALE_PATH
+  I18n.backend.load_translations
+end
+
 module Yabi
 end
 
 # Provide global constants for easier adoption in existing Rails apps.
-unless defined?(::BaseInteractor)
-  ::BaseInteractor = Yabi::BaseInteractor
-end
+BaseInteractor = Yabi::BaseInteractor unless defined?(BaseInteractor)
 
 # Backwards compatibility shim for legacy code using BaseService naming.
-unless defined?(::BaseService)
-  ::BaseService = Yabi::BaseInteractor
-end
+BaseService = Yabi::BaseInteractor unless defined?(BaseService)

@@ -7,6 +7,4 @@ module Yabi
   BaseService = BaseInteractor
 end
 
-unless defined?(::BaseService)
-  ::BaseService = Yabi::BaseService
-end
+BaseService = Yabi::BaseService unless defined?(BaseService)
