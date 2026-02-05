@@ -28,5 +28,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'dry-validation', '>= 1.10'
   spec.add_dependency 'faraday', '>= 2.0', '< 3'
 
+  spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rspec', '~> 3.12'
 end
