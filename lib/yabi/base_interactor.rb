@@ -18,8 +18,17 @@ module Yabi
 
     class << self
       # Entrypoint. Instantiates, runs validation, then #call.
-      def call(contract: nil, **args, &block)
-        normalized_args = transform_values_to_hash(args)
+      def call(*positional_args, contract: nil, **args, &block)
+        merged_args =
+          if positional_args.first.is_a?(Hash)
+            args.merge(positional_args.first)
+          elsif positional_args.any?
+            raise ArgumentError, "unexpected positional arguments: #{positional_args.inspect}"
+          else
+            args
+          end
+
+        normalized_args = transform_values_to_hash(merged_args)
         validation_contract = contract || self.contract
 
         instance = new(**normalized_args)
@@ -64,7 +73,9 @@ module Yabi
     # Hook for app-specific logging; override to plug in your logger.
     def log_warning_and_return_failure(validation)
       # LoggerService.call(message: "Validation failed: #{validation.errors.inspect}", level: :warn)
-      Failure(validation.errors)
+      errors = validation.respond_to?(:errors) ? validation.errors : validation
+      errors = errors.to_h if errors.respond_to?(:to_h)
+      Failure(errors)
     end
 
     # Implement in subclasses.

@@ -8,9 +8,12 @@ RSpec.describe Yabi::BaseInteractor do
       Class.new(described_class) do
         option :foo
 
-        class ValidationContract < Dry::Validation::Contract
-          params { required(:foo).filled(:integer) }
-        end
+        self.const_set(
+          :ValidationContract,
+          Class.new(Dry::Validation::Contract) do
+            params { required(:foo).filled(:integer) }
+          end
+        )
 
         def call
           Success(foo * 2)

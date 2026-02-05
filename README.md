@@ -4,26 +4,16 @@ A tiny base class for service objects/interactors built on `dry-monads`, `dry-in
 
 ## Installation
 
-Add to your Gemfile (choose one):
+Add to your Gemfile:
 
-- Core/lightweight (no HTTP interactor auto-required)
-  ```ruby
-  gem 'yabi', git: 'https://example.com/yabi.git'
-  ```
-
-- Full (explicitly include HTTP interactor and Faraday adapter choice)
-  ```ruby
-  gem 'yabi', git: 'https://example.com/yabi.git'
-  # optional: pin your adapter stack; faraday is already a runtime dep of yabi
-  gem 'faraday', '~> 2.9'
-  ```
+```ruby
+gem 'yabi', git: 'https://example.com/yabi.git'
+```
 
 Require the gem (Rails autoloading works too):
 
 ```ruby
 require 'yabi'
-# and when you need HTTP interactor
-require 'yabi/http/request_interactor'
 ```
 
 By default the gem exposes `Yabi::BaseInteractor` plus shims `BaseInteractor` and `BaseService` (only defined if missing) to ease migration of existing code.
@@ -69,10 +59,15 @@ end
 
 `Yabi::BaseInteractor` uses `dry_initializer.attributes(self)` to collect declared options/params for validation instead of scraping every instance variable. This avoids leaking internal state while keeping compatibility with dry-initializer defaults. A fallback to the previous instance-variable scan remains for non-dry objects.
 
-## Example: HTTP request interactor
+## Example: HTTP request interactor (not included in the gem)
+
+The gem no longer ships an HTTP interactor to avoid adding Faraday as a runtime
+dependency. If you want one, you can copy/paste or adapt the example below.
+Remember to add Faraday (or your preferred adapter) to your own Gemfile.
 
 ```ruby
-# optional: require 'yabi/http/request_interactor'
+require 'faraday'
+require 'uri'
 
 class Integrations::Http::Requests::Make < BaseInteractor
   option :http_method
@@ -91,11 +86,11 @@ class Integrations::Http::Requests::Make < BaseInteractor
     end
 
     rule(:http_method) do
-      key.failure(:invalid_http_method) unless %w[get post put patch delete].include?(value.to_s.downcase)
+      key.failure('is not a supported HTTP method') unless %w[get post put patch delete].include?(value.to_s.downcase)
     end
 
     rule(:url) do
-      key.failure(:invalid_url) unless value.to_s.match?(URI::DEFAULT_PARSER.make_regexp)
+      key.failure('is not a valid URL') unless value.to_s.match?(URI::DEFAULT_PARSER.make_regexp)
     end
   end
 
@@ -114,7 +109,7 @@ class Integrations::Http::Requests::Make < BaseInteractor
   end
 
   def prepared_request_params
-    request_params.is_a?(Hash) ? request_params.as_json : request_params
+    request_params.respond_to?(:to_h) ? request_params.to_h : request_params
   end
 end
 
@@ -126,8 +121,8 @@ Integrations::Http::Requests::Make.call(
   ->(error)    { puts \"Error: #{error}\" }
 )
 ```
-
-This interactor is available in the gem as `Yabi::Http::RequestInteractor` (require it explicitly). Faraday (~> 2.x) is used under the hood; configure adapters/options as needed via the `options` argument.
+This interactor is only an example; include it in your own app if desired and add
+Faraday (or another HTTP client) to your dependencies.
 
 ## Development
 

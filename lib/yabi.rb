@@ -4,8 +4,6 @@ require_relative 'yabi/version'
 require_relative 'yabi/base_interactor'
 require_relative 'yabi/base_contract'
 require_relative 'yabi/base_service'
-# Optional components (require as needed):
-# require_relative 'yabi/http/request_interactor'
 
 module Yabi
 end
