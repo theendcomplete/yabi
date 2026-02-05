@@ -5,12 +5,12 @@ require_relative 'lib/yabi/version'
 Gem::Specification.new do |spec|
   spec.name          = 'yabi'
   spec.version       = Yabi::VERSION
-  spec.authors       = ['Fortune Teller Team']
-  spec.email         = ['dev@example.com']
+  spec.authors       = ['Nikkie Grom']
+  spec.email         = ['nikkie@nikkie.dev']
 
   spec.summary       = 'Yet Another Base Interactor'
   spec.description   = 'A small dry-rb-based base service/interactor with optional contract validation.'
-  spec.homepage      = 'https://example.com/yabi'
+  spec.homepage      = 'https://github.com/theendcomplete/yabi'
   spec.license       = 'MIT'
 
   spec.required_ruby_version = Gem::Requirement.new('>= 3.1')
