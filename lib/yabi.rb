@@ -16,9 +16,3 @@ end
 
 module Yabi
 end
-
-# Provide global constants for easier adoption in existing Rails apps.
-BaseInteractor = Yabi::BaseInteractor unless defined?(BaseInteractor)
-
-# Backwards compatibility shim for legacy code using BaseService naming.
-BaseService = Yabi::BaseInteractor unless defined?(BaseService)
