@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/theendcomplete/yabi'
   spec.license       = 'MIT'
 
-  spec.required_ruby_version = Gem::Requirement.new('>= 3.1')
+  spec.required_ruby_version = Gem::Requirement.new('>= 3.3')
 
   spec.metadata['allowed_push_host'] = 'https://rubygems.org'
   spec.metadata['rubygems_mfa_required'] = 'true'
@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'dry-validation', '>= 1.10'
   spec.add_dependency 'i18n', '>= 1.6', '< 2'
 
-  spec.add_development_dependency 'rspec', '~> 3.12'
-  spec.add_development_dependency 'rubocop', '~> 1.66'
-  spec.add_development_dependency 'rubocop-rspec', '~> 2.30'
+  spec.add_development_dependency 'rspec', '~> 3.13'
+  spec.add_development_dependency 'rubocop', '~> 1.92'
+  spec.add_development_dependency 'rubocop-rspec', '~> 3.10'
 end

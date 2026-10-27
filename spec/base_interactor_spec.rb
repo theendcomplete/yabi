@@ -71,10 +71,13 @@ RSpec.describe Yabi::BaseInteractor do
   end
 
   describe 'compatibility shim' do
-    it 'defines top-level shims for legacy names' do
-      expect(Object.const_defined?(:BaseInteractor)).to be(true)
-      expect(BaseInteractor).to eq(described_class)
+    it 'keeps the legacy BaseService name' do
+      expect(Yabi::BaseService).to eq(described_class)
       expect(BaseService).to eq(described_class)
+    end
+
+    it 'does not define a top-level BaseInteractor' do
+      expect(Object.const_defined?(:BaseInteractor)).to be(false)
     end
   end
 end

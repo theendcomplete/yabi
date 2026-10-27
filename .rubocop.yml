@@ -1,9 +1,8 @@
-require:
-  - ./rubocop_compat
+plugins:
   - rubocop-rspec
 
 AllCops:
-  TargetRubyVersion: 3.1
+  TargetRubyVersion: 3.3
   NewCops: enable
   UseCache: false
   SuggestExtensions: false
@@ -19,12 +18,6 @@ Gemspec/DevelopmentDependencies:
 RSpec:
   Enabled: true
 
-RSpecRails:
-  Enabled: false
-
-Capybara:
-  Enabled: false
-
 RSpec/MultipleDescribes:
   Enabled: false
 
@@ -32,7 +25,4 @@ RSpec/MultipleExpectations:
   Enabled: false
 
 RSpec/ExampleLength:
-  Enabled: false
-
-Capybara/RSpec/PredicateMatcher:
   Enabled: false

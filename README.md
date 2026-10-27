@@ -4,10 +4,12 @@ A tiny base class for service objects/interactors built on `dry-monads`, `dry-in
 
 ## Installation
 
+Requires Ruby 3.3 or newer.
+
 Add to your Gemfile:
 
 ```ruby
-gem 'yabi', git: 'https://example.com/yabi.git'
+gem 'yabi'
 ```
 
 Require the gem (Rails autoloading works too):
@@ -16,12 +18,12 @@ Require the gem (Rails autoloading works too):
 require 'yabi'
 ```
 
-By default the gem exposes `Yabi::BaseInteractor` plus shims `BaseInteractor` and `BaseService` (only defined if missing) to ease migration of existing code.
+The gem exposes `Yabi::BaseInteractor` plus top-level shims `BaseService` and `BaseContract` (only defined if missing) to ease migration of existing code.
 
 ## Usage
 
 ```ruby
-class Users::Questions::Create < BaseInteractor
+class Users::Questions::Create < Yabi::BaseInteractor
   option :question_text
 
   class ValidationContract < BaseContract
@@ -34,7 +36,7 @@ class Users::Questions::Create < BaseInteractor
 end
 
 Users::Questions::Create.call(question_text: 'hello')
-# => Success(\"HELLO\")
+# => Success("HELLO")
 ```
 
 ### Contracts
@@ -73,7 +75,7 @@ Remember to add Faraday (or your preferred adapter) to your own Gemfile.
 require 'faraday'
 require 'uri'
 
-class Integrations::Http::Requests::Make < BaseInteractor
+class Integrations::Http::Requests::Make < Yabi::BaseInteractor
   option :http_method
   option :url
   option :request_params, default: -> { {} }
@@ -121,8 +123,8 @@ Integrations::Http::Requests::Make.call(
   http_method: 'get',
   url: 'https://jsonplaceholder.typicode.com/posts/1'
 ).either(
-  ->(response) { puts \"Success: #{response.status}\" },
-  ->(error)    { puts \"Error: #{error}\" }
+  ->(response) { puts "Success: #{response.status}" },
+  ->(error)    { puts "Error: #{error}" }
 )
 ```
 This interactor is only an example; include it in your own app if desired and add
@@ -133,6 +135,7 @@ Faraday (or another HTTP client) to your dependencies.
 ```sh
 bundle install
 bundle exec rspec
+bundle exec rubocop
 ```
 
 ## License
