@@ -1,6 +1,11 @@
 plugins:
   - rubocop-rspec
 
+# Keep RuboCop's default excludes (vendor/, node_modules/, .git/) alongside ours.
+inherit_mode:
+  merge:
+    - Exclude
+
 AllCops:
   TargetRubyVersion: 3.3
   NewCops: enable
